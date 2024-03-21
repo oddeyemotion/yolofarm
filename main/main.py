@@ -1,14 +1,16 @@
 import paho.mqtt.client as mqtt
 import pyodbc
 import time
+import random
+from datetime import datetime
 
 MQTT_SERVER = "mqtt.ohstem.vn"
 MQTT_PORT = 1883
 MQTT_USERNAME = "yolo"
 MQTT_PASSWORD = ""
-# MQTT_TOPIC_PUB = MQTT_USERNAME + "/feeds/V3" # use for publish the data back to the feed
 MQTT_TOPIC_SUB_V3 = MQTT_USERNAME + "/feeds/V3"
 MQTT_TOPIC_SUB_V4 = MQTT_USERNAME + "/feeds/V4"
+
 
 driver_name = "{ODBC Driver 17 for SQL Server}"
 server_name = "DESKTOP-7CB1RAA"
@@ -27,26 +29,19 @@ temp = []
 light = []
 ###########
 
-class mqtt_Eve():
-    def mqtt_connected(client, userdata, flags, rc):
-        print("Connected succesfully!!")
-        client.subscribe(MQTT_TOPIC_SUB_V3)
-        client.subscribe(MQTT_TOPIC_SUB_V4)
+def mqtt_connected(client, userdata, flags, rc):
+    print("Connected succesfully to Ohstem server!!")
+    client.subscribe(MQTT_TOPIC_SUB_V3)
+    client.subscribe(MQTT_TOPIC_SUB_V4)
 
-    def mqtt_subscribed(client, userdata, mid, granted_qos):
-        print("Subscribed to Topic!!!")
+def mqtt_subscribed(client, userdata, mid, granted_qos):
+    print("Subscribed to Topic!!!")
 
-    def mqtt_recv_message(client, userdata, message):
-        # print("Received: ", message.payload.decode("utf-8"))
-        # print(" Received message " + message.payload.decode("utf-8")
-        #       + " on topic '" + message.topic
-        #       + "' with QoS " + str(message.qos))
-        # global temp 
-        # temp = message.payload.decode("utf-8")
-        if (message.topic == "yolo/feeds/V3"):
-            temp.append(float(message.payload.decode("utf-8")))
-        elif (message.topic == "yolo/feeds/V4"):
-            light.append(float(message.payload.decode("utf-8")))
+def mqtt_recv_message(client, userdata, message):
+    if (message.topic == "yolo/feeds/V3"):
+        temp.append(float(message.payload.decode("utf-8")))
+    elif (message.topic == "yolo/feeds/V4"):
+        light.append(float(message.payload.decode("utf-8")))
 
 mqttClient = mqtt.Client()
 mqttClient.username_pw_set(MQTT_USERNAME, MQTT_PASSWORD)
@@ -58,13 +53,6 @@ mqttClient.on_subscribe = mqtt_subscribed
 mqttClient.on_message = mqtt_recv_message
 
 mqttClient.loop_start()
-
-while True:
-    time.sleep(3)
-    print(temp)
-    print(light)
-    # mqttClient.publish(MQTT_TOPIC_PUB, 1)
-
 
 
 try:
@@ -83,14 +71,28 @@ try:
     result = cursor.fetchone()
 
     if result[0] == 1:
-        print("Connection successful!")
+        print("Connection successful to SQL Server!")
     else:
         print("Unexpected query result.")
 
 except pyodbc.Error as ex:
     print("Error connecting to database:", ex)
 
-finally:
-    # Close the connection if opened
-    if conn:
-        conn.close()
+
+for i in range (0,5):
+    time.sleep(3)
+    # print("hello")
+    now = datetime.now()
+    temp = round(random.uniform(10, 40), 2)
+    print("now =", now)
+    print("temp =", temp)
+
+    query = "INSERT INTO Temperature (Date_, Temp) VALUES (?, ?)"
+    cursor.execute(query, now, temp)
+    conn.commit()
+    # print(temp)
+    # print(light)
+conn.close()
+
+
+

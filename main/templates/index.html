@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Yolo Farm</title>
+    <!-- Linking CSS file using url_for -->
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='styles.css') }}"
+    />
+  </head>
+  <body>
+    <header>
+      <h1>Welcome to Yolo Farm</h1>
+    </header>
+    <nav>
+      <ul>
+        <li>
+          <button type="button" onclick="redirectToLoginPage()">Log in</button>
+        </li>
+        <li>
+          <button type="button" onclick="redirectToSignUpPage()">
+            Sign up
+          </button>
+        </li>
+      </ul>
+    </nav>
+    <main>
+      <p class="traveling-message">
+        Welcome to the landing page of Yolo Farm👨‍🌾👩‍🌾🌾
+      </p>
+    </main>
+    <footer>
+      <p>&copy; 2024 Yolo Website</p>
+    </footer>
+
+    <script>
+      function redirectToLoginPage() {
+        window.location.href = "login";
+      }
+      function redirectToSignUpPage() {
+        window.location.href = "signup";
+      }
+    </script>
+  </body>
+</html>

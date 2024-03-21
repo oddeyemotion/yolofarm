@@ -1,0 +1,181 @@
+/* style.css */
+
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f0f0f0;
+}
+
+header {
+  background-color: rgb(238, 234, 30);
+  color: white;
+  text-align: center;
+  padding: 1em;
+}
+
+/* Styling for h1 with emoji */
+header h1::before {
+  content: "👻"; /* Unicode representation for rocket emoji */
+  display: inline-block;
+  margin-right: 10px; /* Adjust the spacing as needed */
+}
+header h1::after {
+  content: "🤡"; /* Unicode representation for rocket emoji */
+  display: inline-block;
+  margin-right: 10px; /* Adjust the spacing as needed */
+}
+
+h1 {
+  display: inline-block;
+  font-size: 2.5em; /* Adjust the font size as needed */
+  color: black;
+}
+
+p {
+  line-height: 1.5;
+  color: #555;
+}
+
+/* Example of a class selector */
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Example of an ID selector */
+#main-content {
+  background-color: #fff;
+  padding: 20px;
+}
+
+/* Example of a hover effect on a link */
+a:hover {
+  text-decoration: underline;
+  color: #777;
+}
+
+button {
+  text-align: center;
+  padding: 10px 165px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.7s ease;
+}
+button:active {
+  transform: scale(0.9);
+}
+button:hover {
+  background-color: #45a049;
+}
+
+/* Styling for navigation buttons */
+nav {
+  text-align: center;
+}
+
+nav ul {
+  list-style: none;
+  padding: 0;
+}
+
+nav li {
+  display: inline-block;
+  margin-right: 15px;
+  transition: all 1s ease;
+}
+
+nav li:active {
+  transform: scale(0.8);
+}
+
+nav a {
+  text-decoration: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  background-color: #4caf50;
+  color: white;
+  transition: background-color 0.3s ease;
+}
+
+nav a:hover {
+  background-color: #45a049;
+}
+
+label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+input {
+  margin-bottom: 10px;
+  padding: 5px 100px; /* Adjust as needed */
+  background-color: white;
+  border-color: black;
+  border-radius: 5px;
+  text-align: center;
+  box-sizing: border-box; /* Add this line */
+}
+
+select {
+  margin-bottom: 10px;
+  padding: 5px 110px;
+  background-color: white;
+  border-color: black;
+  border-radius: 5px;
+}
+
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 50vh;
+  margin-top: 30px; /* Adjust the margin as needed */
+}
+
+table {
+  /* width: 100%; */
+  border: 1px solid black;
+}
+
+td,
+th {
+  text-align: center;
+  border: 1px solid #b0b0b0;
+  padding: 5px;
+}
+
+form {
+  border: 1px solid #ddd; /* Border color */
+  padding: 20px;
+  border-radius: 10px;
+  border-width: 10px;
+}
+
+input[type="date"] {
+  padding: 5px 128px;
+}
+
+/* Define a keyframes animation */
+@keyframes travel {
+  from {
+    transform: translateX(120%); /* Start from the left of the screen */
+  }
+  to {
+    transform: translateX(-100%); /* End at the right of the screen */
+  }
+}
+
+/* Apply the animation to the message */
+.traveling-message {
+  position: absolute; /* Position the element absolutely */
+  top: 50%; /* Center vertically */
+  left: 0; /* Start from the left edge of the screen */
+  white-space: nowrap; /* Prevent text from wrapping */
+  animation: travel 12s linear infinite; /* Adjust duration as needed */
+  font-size: xx-large;
+}

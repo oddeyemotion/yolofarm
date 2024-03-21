@@ -7,7 +7,7 @@ IF EXISTS (SELECT * FROM SYS.objects WHERE NAME = 'Temperature')
 GO
 CREATE TABLE Temperature
 (
-	Date_   Datetime NOT NULL,
+	Date_   Datetime2 NOT NULL,
 	Temp	Int
 )
 
