@@ -13,9 +13,10 @@
   </head>
   <body>
     <header>
-      <h1>Welcome to Yolo Farm</h1>
+      <h1>Yolo Farm</h1>
     </header>
-    <nav>
+
+    <!-- <nav>
       <ul>
         <li>
           <button type="button" onclick="redirectToLoginPage()">Log in</button>
@@ -26,10 +27,12 @@
           </button>
         </li>
       </ul>
-    </nav>
+    </nav> -->
     <main>
+      <p id="temperature"></p>
+      <p id="flux"></p>
       <p class="traveling-message">
-        Welcome to the landing page of Yolo Farm👨‍🌾👩‍🌾🌾
+        👨‍🌾Welcome to the landing page of Yolo Farm👩‍🌾🌾
       </p>
     </main>
     <footer>
@@ -43,6 +46,61 @@
       function redirectToSignUpPage() {
         window.location.href = "signup";
       }
+
+      /*
+      function updateNumberNotGood() {
+        // Make a GET request to your Flask route to fetch the updated number
+        fetch("/")
+          .then((response) => response.text())
+          .then((data) => {
+            // Extract the number from the response HTML
+            var number = data.match(/<p id="number">(\d+)<\/p>/)[1];
+            document.getElementById("number").innerText = number;
+          });
+      }
+      */
+
+      function updateTemp() {
+        // Make a GET request to your Flask route to fetch the updated number
+        fetch("/get_number")
+          .then((response) => response.json())
+          .then((data) => {
+            document.getElementById("temperature").innerText =
+              "The current temperature is: " + data.number + " ℃";
+          });
+      }
+
+      function updateTemp() {
+        // Make a GET request to your Flask route to fetch the updated number
+        fetch("/get_number")
+          .then((response) => response.json())
+          .then((data) => {
+            document.getElementById("temperature").innerText =
+              "The current temperature is: " + data.temp + " ℃";
+          });
+      }
+
+      function updateFlux() {
+        // Make a GET request to your Flask route to fetch the updated number
+        fetch("/get_number")
+          .then((response) => response.json())
+          .then((data) => {
+            document.getElementById("flux").innerText =
+              "The current flux is: " + data.flux + " F";
+          });
+      }
+
+      // Update the number initially
+
+      function updateAll() {
+        updateTemp();
+        updateFlux();
+      }
+
+      updateAll();
+
+      // Update the number every 1.5 seconds
+      setInterval(updateAll, 1500);
     </script>
   </body>
 </html>

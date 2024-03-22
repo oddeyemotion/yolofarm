@@ -13,3 +13,5 @@ CREATE TABLE Temperature
 
 ALTER TABLE Temperature
 	ADD CONSTRAINT PK_Temp PRIMARY KEY (Date_)
+
+-- add user tables

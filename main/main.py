@@ -25,8 +25,8 @@ conn_str = (
 conn = pyodbc.connect(conn_str)
 
 ###########
-temp = []
-light = []
+global temp
+global light
 ###########
 
 def mqtt_connected(client, userdata, flags, rc):
@@ -79,17 +79,18 @@ except pyodbc.Error as ex:
     print("Error connecting to database:", ex)
 
 
-for i in range (0,5):
+while True:
     time.sleep(3)
     # print("hello")
     now = datetime.now()
     temp = round(random.uniform(10, 40), 2)
-    print("now =", now)
-    print("temp =", temp)
+    light = round(random.uniform(0, 100), 2)
+    # print("now =", now)
+    # print("temp =", temp)
 
-    query = "INSERT INTO Temperature (Date_, Temp) VALUES (?, ?)"
-    cursor.execute(query, now, temp)
-    conn.commit()
+    # query = "INSERT INTO Temperature (Date_, Temp) VALUES (?, ?)"
+    # cursor.execute(query, now, temp)
+    # conn.commit()
     # print(temp)
     # print(light)
 conn.close()

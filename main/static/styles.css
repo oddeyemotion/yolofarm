@@ -16,7 +16,7 @@ header {
 
 /* Styling for h1 with emoji */
 header h1::before {
-  content: "👻"; /* Unicode representation for rocket emoji */
+  content: "🤖"; /* Unicode representation for rocket emoji */
   display: inline-block;
   margin-right: 10px; /* Adjust the spacing as needed */
 }
@@ -172,10 +172,10 @@ input[type="date"] {
 
 /* Apply the animation to the message */
 .traveling-message {
-  position: absolute; /* Position the element absolutely */
+  /*position: absolute; /* Position the element absolutely */
   top: 50%; /* Center vertically */
   left: 0; /* Start from the left edge of the screen */
   white-space: nowrap; /* Prevent text from wrapping */
-  animation: travel 12s linear infinite; /* Adjust duration as needed */
-  font-size: xx-large;
+  animation: travel 14s linear infinite; /* Adjust duration as needed */
+  font-size: 30px;
 }
