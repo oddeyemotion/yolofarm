@@ -1,99 +1,59 @@
 import paho.mqtt.client as mqtt
-import pyodbc
 import time
 import random
 from datetime import datetime
+import firebase_admin
+from firebase_admin import credentials
+from firebase_admin import firestore
+import os
+from pathlib import Path
+from utils import *
+from utils import temp_queue, light_queue
+import threading
+import queue
 
-MQTT_SERVER = "mqtt.ohstem.vn"
-MQTT_PORT = 1883
-MQTT_USERNAME = "yolo"
-MQTT_PASSWORD = ""
-MQTT_TOPIC_SUB_V3 = MQTT_USERNAME + "/feeds/V3"
-MQTT_TOPIC_SUB_V4 = MQTT_USERNAME + "/feeds/V4"
+
+home_dir = os.getcwd()
+path = Path(home_dir)
+print(path.parent.absolute())
+
+# provide that you are staying at yolofarm/main folder
+relative_path = os.path.join(path.parent, "connect\yolofarm-92ca9-firebase-adminsdk-uwty3-af106b6fcd.json")
+# Initialize Firebase Admin SDK
+cred = credentials.Certificate(relative_path)
+firebase_admin.initialize_app(cred)
 
 
-driver_name = "{ODBC Driver 17 for SQL Server}"
-server_name = "DESKTOP-7CB1RAA"
-database_name = "yolofarm"
-conn_str = (
-            f"DRIVER={driver_name};"
-            f"SERVER={server_name};"
-            f"DATABASE={database_name};"
-            f"Trusted_Connection=yes;"
-        )
-# Create the connection to database
-conn = pyodbc.connect(conn_str)
-
-###########
-global temp
-global light
-###########
-
-def mqtt_connected(client, userdata, flags, rc):
-    print("Connected succesfully to Ohstem server!!")
-    client.subscribe(MQTT_TOPIC_SUB_V3)
-    client.subscribe(MQTT_TOPIC_SUB_V4)
-
-def mqtt_subscribed(client, userdata, mid, granted_qos):
-    print("Subscribed to Topic!!!")
-
-def mqtt_recv_message(client, userdata, message):
-    if (message.topic == "yolo/feeds/V3"):
-        temp.append(float(message.payload.decode("utf-8")))
-    elif (message.topic == "yolo/feeds/V4"):
-        light.append(float(message.payload.decode("utf-8")))
-
+##########
 mqttClient = mqtt.Client()
 mqttClient.username_pw_set(MQTT_USERNAME, MQTT_PASSWORD)
 mqttClient.connect(MQTT_SERVER, int(MQTT_PORT), 60)
-
 #Register mqtt events
 mqttClient.on_connect = mqtt_connected
 mqttClient.on_subscribe = mqtt_subscribed
 mqttClient.on_message = mqtt_recv_message
-
 mqttClient.loop_start()
 
+db = firestore.client()
+ref = db.collection("yolo") 
 
-try:
-    conn = pyodbc.connect(
-    '''
-    DRIVER={ODBC Driver 17 for SQL Server};
-    SERVER=DESKTOP-7CB1RAA;
-    DATABASE=yolofarm;
-    Trusted_Connection=yes;
-    '''
-    )
-
-    cursor = conn.cursor()
-
-    cursor.execute("SELECT 1 AS test_value")
-    result = cursor.fetchone()
-
-    if result[0] == 1:
-        print("Connection successful to SQL Server!")
-    else:
-        print("Unexpected query result.")
-
-except pyodbc.Error as ex:
-    print("Error connecting to database:", ex)
+def mqtt_task():
+    id = 0
+    while True:
+        # update to database
+        time.sleep(1.5)
+        now = datetime.now()
+        # temp = round(random.uniform(10, 40), 2)
+        temp = temp_queue.get()
+        flux = light_queue.get()
+        ref.document(str(id)).set(Record(temp, flux, now).to_dict())
+        id += 1
 
 
-while True:
-    time.sleep(3)
-    # print("hello")
-    now = datetime.now()
-    temp = round(random.uniform(10, 40), 2)
-    light = round(random.uniform(0, 100), 2)
-    # print("now =", now)
-    # print("temp =", temp)
+mqtt_thread = threading.Thread(target=mqtt_task)
+mqtt_thread.start()
 
-    # query = "INSERT INTO Temperature (Date_, Temp) VALUES (?, ?)"
-    # cursor.execute(query, now, temp)
-    # conn.commit()
-    # print(temp)
-    # print(light)
-conn.close()
+
 
 
 
