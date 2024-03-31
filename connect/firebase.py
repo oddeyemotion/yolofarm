@@ -4,7 +4,7 @@ from firebase_admin import firestore
 import os
 
 home_dir = os.getcwd()
-relative_path = os.path.join(home_dir, "connect\yolofarm-92ca9-firebase-adminsdk-uwty3-af106b6fcd.json")
+relative_path = os.path.join(home_dir, "yolofarm-92ca9-firebase-adminsdk-uwty3-21e21c3d97.json")
 # Initialize Firebase Admin SDK
 cred = credentials.Certificate(relative_path)
 firebase_admin.initialize_app(cred)
