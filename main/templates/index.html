@@ -29,78 +29,168 @@
       </ul>
     </nav> -->
     <main>
-      <p id="temperature"></p>
-      <p id="flux"></p>
       <p class="traveling-message">
         👨‍🌾Welcome to the landing page of Yolo Farm👩‍🌾🌾
       </p>
+      <div class="graphs-container">
+        <div class="chart-container">
+          <h3>Biểu Đồ Nhiệt Độ</h3>
+          <canvas id="tempChart" class="chart-canvas"></canvas>
+        </div>
+
+        <div class="chart-container">
+          <h3>Biểu Đồ Ánh Sáng</h3>
+          <canvas id="fluxChart" class="chart-canvas"></canvas>
+        </div>
+
+        <div class="chart-container">
+          <h3>Biểu Đồ Độ Ẩm Đất</h3>
+          <canvas id="earthHumidityChart" class="chart-canvas"></canvas>
+        </div>
+
+        <div class="chart-container">
+          <h3>Biểu Đồ Độ Ẩm</h3>
+          <canvas id="humidityChart" class="chart-canvas"></canvas>
+        </div>
+      </div>
     </main>
     <footer>
       <p>&copy; 2024 Yolo Website</p>
     </footer>
-
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
-      function redirectToLoginPage() {
-        window.location.href = "login";
-      }
-      function redirectToSignUpPage() {
-        window.location.href = "signup";
-      }
+      document.addEventListener("DOMContentLoaded", function () {
+        const tempCtx = document.getElementById("tempChart").getContext("2d");
+        const fluxCtx = document.getElementById("fluxChart").getContext("2d");
+        const humidityCtx = document
+          .getElementById("humidityChart")
+          .getContext("2d");
+        const earthHumidityCtx = document
+          .getElementById("earthHumidityChart")
+          .getContext("2d");
 
-      /*
-      function updateNumberNotGood() {
-        // Make a GET request to your Flask route to fetch the updated number
-        fetch("/")
-          .then((response) => response.text())
-          .then((data) => {
-            // Extract the number from the response HTML
-            var number = data.match(/<p id="number">(\d+)<\/p>/)[1];
-            document.getElementById("number").innerText = number;
-          });
-      }
-      */
+        const tempChart = new Chart(tempCtx, {
+          type: "line",
+          data: {
+            labels: [
+              "January",
+              "February",
+              "March",
+              "April",
+              "May",
+              "June",
+              "July",
+            ],
+            datasets: [
+              {
+                label: "Nhiệt độ",
+                data: [0, 10, 5, 2, 20, 30, 45],
+                borderColor: "rgb(255, 99, 132)",
+                backgroundColor: "rgba(255, 99, 132, 0.5)",
+              },
+            ],
+          },
+          options: {
+            scales: {
+              y: {
+                beginAtZero: true,
+              },
+            },
+          },
+        });
 
-      function updateTemp() {
-        // Make a GET request to your Flask route to fetch the updated number
-        fetch("/get_number")
-          .then((response) => response.json())
-          .then((data) => {
-            document.getElementById("temperature").innerText =
-              "The current temperature is: " + data.number + " ℃";
-          });
-      }
+        const fluxChart = new Chart(fluxCtx, {
+          type: "line",
+          data: {
+            labels: [
+              "January",
+              "February",
+              "March",
+              "April",
+              "May",
+              "June",
+              "July",
+            ],
+            datasets: [
+              {
+                label: "Ánh sáng",
+                data: [45, 30, 60, 40, 60, 95, 100],
+                borderColor: "rgb(54, 162, 235)",
+                backgroundColor: "rgba(54, 162, 235, 0.5)",
+              },
+            ],
+          },
+          options: {
+            scales: {
+              y: {
+                beginAtZero: true,
+              },
+            },
+          },
+        });
 
-      function updateTemp() {
-        // Make a GET request to your Flask route to fetch the updated number
-        fetch("/get_number")
-          .then((response) => response.json())
-          .then((data) => {
-            document.getElementById("temperature").innerText =
-              "The current temperature is: " + data.temp + " ℃";
-          });
-      }
+        const earthHumidityChart = new Chart(earthHumidityCtx, {
+          type: "line",
+          data: {
+            labels: [
+              "January",
+              "February",
+              "March",
+              "April",
+              "May",
+              "June",
+              "July",
+            ],
+            datasets: [
+              {
+                label: "Độ Ẩm Đất",
+                data: [20, 30, 45, 60, 70, 80, 30],
+                borderColor: "rgb(255, 205, 86)",
+                backgroundColor: "rgba(255, 205, 86, 0.2)",
+                tension: 0.1,
+              },
+            ],
+          },
+          options: {
+            scales: {
+              y: {
+                beginAtZero: true,
+              },
+            },
+          },
+        });
 
-      function updateFlux() {
-        // Make a GET request to your Flask route to fetch the updated number
-        fetch("/get_number")
-          .then((response) => response.json())
-          .then((data) => {
-            document.getElementById("flux").innerText =
-              "The current flux is: " + data.flux + " F";
-          });
-      }
-
-      // Update the number initially
-
-      function updateAll() {
-        updateTemp();
-        updateFlux();
-      }
-
-      updateAll();
-
-      // Update the number every 0.5 seconds
-      setInterval(updateAll, 500);
+        const humidityChart = new Chart(humidityCtx, {
+          type: "line",
+          data: {
+            labels: [
+              "January",
+              "February",
+              "March",
+              "April",
+              "May",
+              "June",
+              "July",
+            ],
+            datasets: [
+              {
+                label: "Độ Ẩm",
+                data: [20, 30, 45, 60, 70, 80, 30],
+                borderColor: "rgb(75, 192, 192)",
+                backgroundColor: "rgba(75, 192, 192, 0.2)",
+                tension: 0.1,
+              },
+            ],
+          },
+          options: {
+            scales: {
+              y: {
+                beginAtZero: true,
+              },
+            },
+          },
+        });
+      });
     </script>
   </body>
 </html>

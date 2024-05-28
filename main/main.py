@@ -15,7 +15,7 @@ import queue
 
 home_dir = os.getcwd()
 path = Path(home_dir)
-print(path.parent.absolute())
+# print(path.parent.absolute())
 
 # provide that you are staying at yolofarm/main folder
 relative_path = os.path.join(path.parent, "connect\yolofarm-92ca9-firebase-adminsdk-uwty3-af106b6fcd.json")
@@ -39,9 +39,9 @@ ref = db.collection("yolo")
 
 
 # get 5 latest records
-# docs = ref.order_by('time', direction=firestore.Query.DESCENDING).limit(5).get()
-# for doc in docs:
-#     print(f'{doc.id} => {doc.to_dict()}')
+docs = ref.order_by('time', direction=firestore.Query.DESCENDING).limit(5).get()
+for doc in docs:
+    print(f'{doc.id} => {doc.to_dict()}')
 
 def mqtt_task():
     id = 0

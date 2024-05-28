@@ -179,3 +179,19 @@ input[type="date"] {
   animation: travel 14s linear infinite; /* Adjust duration as needed */
   font-size: 30px;
 }
+
+.graphs-container {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap; /* Optional: Use wrap to allow the charts to move to a new row on smaller screens */
+}
+/* .chart-container {
+  flex: 1; /* Optional: Adjust this to control the space each chart takes 
+  min-width: 300px; /* Optional: Minimum width to ensure charts don't get too small 
+  margin: 20px; /* Optional: Space between charts 
+} */
+
+.chart-canvas {
+  width: 500px !important; /* Force the width */
+  height: 250px !important; /* Set the height */
+}
