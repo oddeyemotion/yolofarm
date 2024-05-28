@@ -9,6 +9,8 @@ MQTT_PASSWORD = ""
 # MQTT_TOPIC_PUB = MQTT_USERNAME + "/feeds/V3" # use for publish the data back to the feed
 MQTT_TOPIC_SUB_V3 = MQTT_USERNAME + "/feeds/V3"
 MQTT_TOPIC_SUB_V4 = MQTT_USERNAME + "/feeds/V4"
+MQTT_TOPIC_SUB_V6 = MQTT_USERNAME + "/feeds/V3"
+MQTT_TOPIC_SUB_V5 = MQTT_USERNAME + "/feeds/V4"
 
 ###########
 temp = []

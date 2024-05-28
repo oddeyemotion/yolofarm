@@ -72,19 +72,11 @@
         const tempChart = new Chart(tempCtx, {
           type: "line",
           data: {
-            labels: [
-              "January",
-              "February",
-              "March",
-              "April",
-              "May",
-              "June",
-              "July",
-            ],
+            labels: [],
             datasets: [
               {
                 label: "Nhiệt độ",
-                data: [0, 10, 5, 2, 20, 30, 45],
+                data: [],
                 borderColor: "rgb(255, 99, 132)",
                 backgroundColor: "rgba(255, 99, 132, 0.5)",
               },
@@ -102,19 +94,11 @@
         const fluxChart = new Chart(fluxCtx, {
           type: "line",
           data: {
-            labels: [
-              "January",
-              "February",
-              "March",
-              "April",
-              "May",
-              "June",
-              "July",
-            ],
+            labels: [],
             datasets: [
               {
                 label: "Ánh sáng",
-                data: [45, 30, 60, 40, 60, 95, 100],
+                data: [],
                 borderColor: "rgb(54, 162, 235)",
                 backgroundColor: "rgba(54, 162, 235, 0.5)",
               },
@@ -132,19 +116,11 @@
         const earthHumidityChart = new Chart(earthHumidityCtx, {
           type: "line",
           data: {
-            labels: [
-              "January",
-              "February",
-              "March",
-              "April",
-              "May",
-              "June",
-              "July",
-            ],
+            labels: [],
             datasets: [
               {
                 label: "Độ Ẩm Đất",
-                data: [20, 30, 45, 60, 70, 80, 30],
+                data: [],
                 borderColor: "rgb(255, 205, 86)",
                 backgroundColor: "rgba(255, 205, 86, 0.2)",
                 tension: 0.1,
@@ -163,19 +139,11 @@
         const humidityChart = new Chart(humidityCtx, {
           type: "line",
           data: {
-            labels: [
-              "January",
-              "February",
-              "March",
-              "April",
-              "May",
-              "June",
-              "July",
-            ],
+            labels: [],
             datasets: [
               {
                 label: "Độ Ẩm",
-                data: [20, 30, 45, 60, 70, 80, 30],
+                data: [],
                 borderColor: "rgb(75, 192, 192)",
                 backgroundColor: "rgba(75, 192, 192, 0.2)",
                 tension: 0.1,
@@ -190,6 +158,37 @@
             },
           },
         });
+
+        function fetchDataAndUpdateCharts() {
+          fetch("/record_data")
+            .then((response) => response.json())
+            .then((data) => {
+              const { temp, flux, humidAtm, humidEarth, timestamp } = data.data;
+
+              // Update temperature chart
+              tempChart.data.labels.push(timestamp);
+              tempChart.data.datasets[0].data.push(temp);
+              tempChart.update();
+
+              // Update flux chart
+              fluxChart.data.labels.push(timestamp);
+              fluxChart.data.datasets[0].data.push(flux);
+              fluxChart.update();
+
+              // Update humidity chart
+              humidityChart.data.labels.push(timestamp);
+              humidityChart.data.datasets[0].data.push(humidAtm);
+              humidityChart.update();
+
+              // Update earth humidity chart
+              earthHumidityChart.data.labels.push(timestamp);
+              earthHumidityChart.data.datasets[0].data.push(humidEarth);
+              earthHumidityChart.update();
+            })
+            .catch((error) => console.error("Error fetching data:", error));
+        }
+
+        setInterval(fetchDataAndUpdateCharts, 2000); // Fetch new data every 5 seconds
       });
     </script>
   </body>

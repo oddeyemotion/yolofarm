@@ -9,8 +9,8 @@ MQTT_TOPIC_SUB_V1 = MQTT_USERNAME + "/feeds/V1"
 MQTT_TOPIC_SUB_V2 = MQTT_USERNAME + "/feeds/V2"
 MQTT_TOPIC_SUB_V3 = MQTT_USERNAME + "/feeds/V3"
 MQTT_TOPIC_SUB_V4 = MQTT_USERNAME + "/feeds/V4"
-
-
+MQTT_TOPIC_SUB_V5 = MQTT_USERNAME + "/feeds/V5"
+MQTT_TOPIC_SUB_V6 = MQTT_USERNAME + "/feeds/V6"
 ###########
 temp_queue = queue.Queue()
 light_queue = queue.Queue()
@@ -21,8 +21,8 @@ humidEarth_queue = queue.Queue()
 
 def mqtt_connected(client, userdata, flags, rc):
     print("Connected succesfully to Ohstem server!!")
-    client.subscribe(MQTT_TOPIC_SUB_V1)
-    client.subscribe(MQTT_TOPIC_SUB_V2)
+    client.subscribe(MQTT_TOPIC_SUB_V5)
+    client.subscribe(MQTT_TOPIC_SUB_V6)
     client.subscribe(MQTT_TOPIC_SUB_V3)
     client.subscribe(MQTT_TOPIC_SUB_V4)
 
@@ -31,13 +31,13 @@ def mqtt_subscribed(client, userdata, mid, granted_qos):
 
 # chỉnh lại cho phù hợp
 def mqtt_recv_message(client, userdata, message):
-    if (message.topic == "yolo/feeds/V1"):
+    if (message.topic == "yolo/feeds/V3"):
         temp_queue.put(float(message.payload.decode("utf-8")))
-    elif (message.topic == "yolo/feeds/V2"):
+    elif (message.topic == "yolo/feeds/V6"):
         light_queue.put(float(message.payload.decode("utf-8")))
-    elif (message.topic == "yolo/feeds/V3"):
-        humidAtm_queue.put(float(message.payload.decode("utf-8")))
     elif (message.topic == "yolo/feeds/V4"):
+        humidAtm_queue.put(float(message.payload.decode("utf-8")))
+    elif (message.topic == "yolo/feeds/V5"):
         humidEarth_queue.put(float(message.payload.decode("utf-8")))
 
 
