@@ -18,7 +18,7 @@ path = Path(home_dir)
 print(path.parent.absolute())
 
 # provide that you are staying at yolofarm/main folder
-relative_path = os.path.join(path.parent, "connect\yolofarm-92ca9-firebase-adminsdk-uwty3-af106b6fcd.json")
+relative_path = os.path.join(path.parent, "connect\yolofarm-92ca9-firebase-adminsdk-uwty3-21e21c3d97.json")
 # Initialize Firebase Admin SDK
 cred = credentials.Certificate(relative_path)
 firebase_admin.initialize_app(cred)

@@ -170,6 +170,23 @@ input[type="date"] {
   }
 }
 
+.graphs-container {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+}
+
+.chart-container {
+  display: flex;
+  flex-direction: column; /* Sắp xếp các items theo chiều dọc */
+  align-items: center; /* Căn giữa các items theo chiều ngang */
+  width: 400px; /* Đặt chiều rộng cố định cho container, đảm bảo nó đủ rộng để chứa canvas */
+}
+
+canvas {
+  max-width: 100%; /* Đảm bảo canvas không vượt quá container */
+  height: auto; /* Tự động điều chỉnh chiều cao dựa trên tỷ lệ của chiều rộng */
+}
 /* Apply the animation to the message */
 .traveling-message {
   /*position: absolute; /* Position the element absolutely */

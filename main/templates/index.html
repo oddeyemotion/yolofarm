@@ -30,15 +30,30 @@
     </nav> -->
     <main>
       <p id="temperature"></p>
-      <p id="flux"></p>
-      <p class="traveling-message">
-        👨‍🌾Welcome to the landing page of Yolo Farm👩‍🌾🌾
-      </p>
+        <p id="flux"></p>
+        <div class="traveling-message">👨‍🌾Welcome to the landing page of Yolo Farm👩‍🌾🌾</div>
+        <!-- Biểu đồ sẽ được hiển thị trong những thẻ canvas này -->
+        <div class="graphs-container">
+          <div class="chart-container">
+            <h3>Biểu Đồ Nhiệt Độ</h3>
+            <canvas id="tempChart" width="400" height="400"></canvas>
+          </div>
+        
+          <div class="chart-container">
+            <h3>Biểu Đồ Ánh Sáng</h3>
+            <canvas id="fluxChart" width="400" height="400"></canvas>
+          </div>
+        
+          <div class="chart-container">
+            <h3>Biểu Đồ Độ Ẩm</h3>
+            <canvas id="humidityChart" width="400" height="400"></canvas>
+          </div>
+        </div>
     </main>
     <footer>
       <p>&copy; 2024 Yolo Website</p>
     </footer>
-
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
       function redirectToLoginPage() {
         window.location.href = "login";
@@ -59,16 +74,6 @@
           });
       }
       */
-
-      function updateTemp() {
-        // Make a GET request to your Flask route to fetch the updated number
-        fetch("/get_number")
-          .then((response) => response.json())
-          .then((data) => {
-            document.getElementById("temperature").innerText =
-              "The current temperature is: " + data.number + " ℃";
-          });
-      }
 
       function updateTemp() {
         // Make a GET request to your Flask route to fetch the updated number
@@ -101,6 +106,73 @@
 
       // Update the number every 0.5 seconds
       setInterval(updateAll, 500);
+
+      document.addEventListener('DOMContentLoaded', function() {
+        
+      const tempCtx = document.getElementById('tempChart').getContext('2d');
+      const fluxCtx = document.getElementById('fluxChart').getContext('2d');
+      const humidityCtx = document.getElementById('humidityChart').getContext('2d');
+
+      const tempChart = new Chart(tempCtx, {
+        type: 'line',
+        data: {
+            labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+            datasets: [{
+                label: 'Nhiệt độ',
+                data: [0, 10, 5, 2, 20, 30, 45],
+                borderColor: 'rgb(255, 99, 132)',
+                backgroundColor: 'rgba(255, 99, 132, 0.5)',
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+      });
+
+      const fluxChart = new Chart(fluxCtx, {
+        type: 'line',
+        data: {
+            labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+            datasets: [{
+                label: 'Ánh sáng',
+                data: [45, 30, 60, 40, 60, 95, 100],
+                borderColor: 'rgb(54, 162, 235)',
+                backgroundColor: 'rgba(54, 162, 235, 0.5)',
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+      });
+      const humidityChart = new Chart(humidityCtx, {
+        type: 'line',
+        data: {
+            labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+            datasets: [{
+                label: 'Độ Ẩm',
+                data: [20, 30, 45, 60, 70, 80, 30],
+                borderColor: 'rgb(75, 192, 192)',
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                tension: 0.1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+      });
+    });
     </script>
   </body>
 </html>
