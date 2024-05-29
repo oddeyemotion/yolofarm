@@ -48,7 +48,6 @@ def record_data():
     # docs = ref.order_by('time', direction=firestore.Query.DESCENDING).limit(1).get()
     # doc = docs[0]
     # temp_data = doc.to_dict()
-
     data = {
         'temp': random.uniform(10, 40),
         'flux': random.uniform(10, 40),
