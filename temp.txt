@@ -1,0 +1,59 @@
+        
+        
+        const tempPredChart = new Chart(tempCtx, {
+          type: "line",
+          data: {
+            labels: [],
+            datasets: [
+              {
+                label: "Predicted Temperature",
+                data: [],
+                borderColor: "rgb(255, 99, 132)",
+                backgroundColor: "rgba(255, 99, 132, 0.5)",
+              },
+            ],
+          },
+          options: {
+            scales: {
+              y: {
+                beginAtZero: true,
+              },
+            },
+          },
+        });
+
+        
+        
+        
+        
+        
+        
+        
+        
+        function fetchPredictionAndUpdateChart() {
+          const inputData = {
+            input: [[3], [5], [5]],
+          };
+
+          fetch("/predict_temperature", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(inputData),
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              const { temperature, timestamp } = data;
+
+              // Update predict temperature chart
+              tempPredChart.data.labels.push(timestamp);
+              tempPredChart.data.datasets[0].data.push(temperature);
+              tempPredChart.update();
+            })
+            .catch((error) =>
+              console.error("Error fetching prediction:", error)
+            );
+        }
+
+        setInterval(fetchPredictionAndUpdateChart, 500); // Fetch new prediction every 2 seconds

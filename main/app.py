@@ -58,7 +58,6 @@ def record_data():
     return jsonify({'message': 'Data recorded', 'data': data})
 
 
-
 # Run the app
 if __name__ == '__main__':
     app.run(debug=True, port=5500)

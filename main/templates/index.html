@@ -16,18 +16,6 @@
       <h1>Yolo Farm</h1>
     </header>
 
-    <!-- <nav>
-      <ul>
-        <li>
-          <button type="button" onclick="redirectToLoginPage()">Log in</button>
-        </li>
-        <li>
-          <button type="button" onclick="redirectToSignUpPage()">
-            Sign up
-          </button>
-        </li>
-      </ul>
-    </nav> -->
     <main>
       <p class="traveling-message">
         👨‍🌾Welcome to the landing page of Yolo Farm👩‍🌾🌾
@@ -52,6 +40,11 @@
           <h3>Biểu Đồ Độ Ẩm</h3>
           <canvas id="humidityChart" class="chart-canvas"></canvas>
         </div>
+
+        <div class="chart-container">
+          <h3>Predicted Temperature</h3>
+          <canvas id="tempPredChart" class="chart-canvas"></canvas>
+        </div>
       </div>
     </main>
     <footer>
@@ -62,6 +55,9 @@
       document.addEventListener("DOMContentLoaded", function () {
         const tempCtx = document.getElementById("tempChart").getContext("2d");
         const fluxCtx = document.getElementById("fluxChart").getContext("2d");
+        const tempPredCtx = document
+          .getElementById("tempPredChart")
+          .getContext("2d");
         const humidityCtx = document
           .getElementById("humidityChart")
           .getContext("2d");
@@ -159,6 +155,28 @@
           },
         });
 
+        const tempPredChart = new Chart(tempPredCtx, {
+          type: "line",
+          data: {
+            labels: [],
+            datasets: [
+              {
+                label: "Predicted Temperature",
+                data: [],
+                borderColor: "rgb(255, 99, 132)",
+                backgroundColor: "rgba(255, 99, 132, 0.5)",
+              },
+            ],
+          },
+          options: {
+            scales: {
+              y: {
+                beginAtZero: true,
+              },
+            },
+          },
+        });
+
         function fetchDataAndUpdateCharts() {
           fetch("/record_data")
             .then((response) => response.json())
@@ -188,7 +206,35 @@
             .catch((error) => console.error("Error fetching data:", error));
         }
 
-        setInterval(fetchDataAndUpdateCharts, 2000); // Fetch new data every 5 seconds
+        function fetchPredictionAndUpdateChart() {
+          const inputData = {
+            input: [[3], [5], [5]],
+          };
+
+          fetch("/predict_temperature", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(inputData),
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              const { temperature, timestamp } = data;
+              console.log("Prediction:", temperature);
+
+              // Update predict temperature chart
+              tempPredChart.data.labels.push(timestamp);
+              tempPredChart.data.datasets[0].data.push(temperature);
+              tempPredChart.update();
+            })
+            .catch((error) =>
+              console.error("Error fetching prediction:", error)
+            );
+        }
+
+        setInterval(fetchDataAndUpdateCharts, 500); // Fetch new data every 2 seconds
+        setInterval(fetchPredictionAndUpdateChart, 500); // Fetch new prediction every 2 seconds
       });
     </script>
   </body>
